@@ -1,18 +1,17 @@
 `timescale 1ns/1ns
 module HVAC_Control(
-    input logic clk,       // Clock input
-    input logic reset,     // Reset input
-    input logic I1,        // Turn On
-    input logic I2,        // Change to Heating
-    input logic I3,        // Change to Cooling
-    input logic I4,        // Turn Off
-    output logic O1,       // Display for user feedback (1 when S0, S1, S2, 0 when S3)
-    output logic O2,       // Control for heating element
-    output logic O3,       // Control for cooling element
-    output logic O4        // Additional output (1 when S3, 0 when S0, S1, S2)
+    input logic clk,       
+    input logic reset,     
+    input logic I1,        
+    input logic I2,        
+    input logic I3,        
+    input logic I4,        
+    output logic O1,       
+    output logic O2,       
+    output logic O3,       
+    output logic O4        
 );
 
-// Define the states
 typedef enum logic [1:0] {
     S0,
     S1,
@@ -20,9 +19,7 @@ typedef enum logic [1:0] {
     S3  
 } state_t;
 
-// Define state registers
 state_t current_state, next_state;
-
 
 always_ff @(posedge clk)
 begin
@@ -40,22 +37,22 @@ begin
             else if (I1 & I2 & !I3 &!I4) next_state = S1;
             else if (I1 & !I2 & I3 & !I4) next_state = S2;
             else if (I4) next_state = S3;
-   else next_state = S0;
+            else next_state = S0;
         S1: if (I1 & I2 & !I3 &!I4) next_state = S1;
             else if (I1 & !I2 & I3 & !I4) next_state = S2;
             else if (I1 & !I2 & !I3 & !I4) next_state = S0;
             else if (I4) next_state = S3;
-   else next_state = S1;
+            else next_state = S1;
         S2: if (I1 & !I2 & I3 & !I4) next_state = S2;
             else if (I1 & I2 & !I3 &!I4) next_state = S1;
             else if (I1 & !I2 & !I3 & !I4) next_state = S0;
             else if (I4) next_state = S3;
-   else next_state = S2;
+            else next_state = S2;
         S3: if (I1 & I2 & !I3 &!I4) next_state = S1;
             else if (I1 & !I2 & I3 & !I4) next_state = S2;
             else if (I1 & !I2 & !I3 & !I4) next_state = S0;
             else if (I4) next_state = S3;
-   else next_state = S3;
+            else next_state = S3;
 
    endcase
 end
