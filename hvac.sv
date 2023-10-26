@@ -23,6 +23,7 @@ typedef enum logic [1:0] {
 // Define state registers
 state_t current_state, next_state;
 
+
 always_ff @(posedge clk)
 begin
     if (reset)
@@ -30,29 +31,35 @@ begin
     else
         current_state <= next_state;
 end
+
 always_comb
 begin
-    case(current_state)
+   case(current_state)
 
-        S0: if (I1) next_state = S0;
-            else if (I2) next_state = S1;
-            else if (I3) next_state = S2;
+        S0: if (I1 & !I2 & !I3 & !I4) next_state = S0;
+            else if (I1 & I2 & !I3 &!I4) next_state = S1;
+            else if (I1 & !I2 & I3 & !I4) next_state = S2;
             else if (I4) next_state = S3;
-        S1: if (I2) next_state = S1;
-            else if (I3) next_state = S2;
-            else if (I1) next_state = S0;
+   else next_state = S0;
+        S1: if (I1 & I2 & !I3 &!I4) next_state = S1;
+            else if (I1 & !I2 & I3 & !I4) next_state = S2;
+            else if (I1 & !I2 & !I3 & !I4) next_state = S0;
             else if (I4) next_state = S3;
-        S2: if (I3) next_state = S2;
-            else if (I2) next_state = S1;
-            else if (I1) next_state = S0;
+   else next_state = S1;
+        S2: if (I1 & !I2 & I3 & !I4) next_state = S2;
+            else if (I1 & I2 & !I3 &!I4) next_state = S1;
+            else if (I1 & !I2 & !I3 & !I4) next_state = S0;
             else if (I4) next_state = S3;
-        S3: if (I2) next_state = S1;
-            else if (I3) next_state = S2;
-            else if (I1) next_state = S0;
+   else next_state = S2;
+        S3: if (I1 & I2 & !I3 &!I4) next_state = S1;
+            else if (I1 & !I2 & I3 & !I4) next_state = S2;
+            else if (I1 & !I2 & !I3 & !I4) next_state = S0;
             else if (I4) next_state = S3;
+   else next_state = S3;
 
-    endcase
+   endcase
 end
+
 assign O1 = (current_state == S0) || (current_state == S1) || (current_state == S2);
 assign O2 = (current_state == S1);
 assign O3 = (current_state == S2);
