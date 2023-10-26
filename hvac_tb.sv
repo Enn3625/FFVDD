@@ -43,21 +43,53 @@ module HVAC_Control_tb;
         reset = 1;
         #10 reset = 0;
 
-        // Test case 1: Turn On (I1=1)
-        I1 = 1;
-        #10 I1 = 0;
+// Idle state
+I1 = 1;
+    I2 = 0;
+    I3 = 0;
+    I4 = 0;
+   
+#10;
+    // Heating
+    I1 = 1;
+    I2 = 1;
+    I3 = 0;
+    I4 = 0;
 
-        // Test case 2: Change to Heating (I2=1)
-         I2 = 1;
-        #10 I2 = 0;
+// Invalid
+#10
+I1=1;
+I2=1;
+I3=1;
+I4=0;
 
-        // Test case 3: Change to Cooling (I3=1)
-         I3 = 1;
-        #10 I3 = 0;
+#10;
+    // Cooling
+    I1 = 1;
+    I2 = 0;
+    I3 = 1;
+    I4 = 0;
 
-        // Test case 4: Turn Off (I4=1)
-         I4 = 1;
-        #10 I4 = 0;
+// Invalid
+#10;
+I1=1;
+I2=1;
+I3=1;
+I4=0;
+
+// Off
+#10;
+I1=0;
+I2=0;
+I3=1;
+I4=1;
+
+// Idle
+#10;
+I1 = 1;
+    I2 = 0;
+    I3 = 0;
+    I4 = 0;
 #200
         // Finish simulation
         $finish;
