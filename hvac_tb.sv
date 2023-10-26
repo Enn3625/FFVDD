@@ -10,7 +10,6 @@ module HVAC_Control_tb;
     wire O3;
     wire O4;
 
-    // Instantiate the module under test
     HVAC_Control UUT (
         .clk(clk),
         .reset(reset),
@@ -24,14 +23,11 @@ module HVAC_Control_tb;
         .O4(O4)
     );
 
-    // Clock generation
     always begin
         #5 clk = ~clk;
     end
 
-    // Testbench stimulus
     initial begin
-        // Initialize signals
         clk = 0;
         reset = 0;
         I1 = 0;
@@ -43,55 +39,55 @@ module HVAC_Control_tb;
         reset = 1;
         #10 reset = 0;
 
-// Idle state
-I1 = 1;
-    I2 = 0;
-    I3 = 0;
-    I4 = 0;
+        // Idle state
+        I1 = 1;
+        I2 = 0;
+        I3 = 0;
+        I4 = 0;
    
-#10;
-    // Heating
-    I1 = 1;
-    I2 = 1;
-    I3 = 0;
-    I4 = 0;
-
-// Invalid
-#10
-I1=1;
-I2=1;
-I3=1;
-I4=0;
-
-#10;
-    // Cooling
-    I1 = 1;
-    I2 = 0;
-    I3 = 1;
-    I4 = 0;
-
-// Invalid
-#10;
-I1=1;
-I2=1;
-I3=1;
-I4=0;
-
-// Off
-#10;
-I1=0;
-I2=0;
-I3=1;
-I4=1;
-
-// Idle
-#10;
-I1 = 1;
-    I2 = 0;
-    I3 = 0;
-    I4 = 0;
-#200
-        // Finish simulation
+        #10;
+        // Heating
+        I1 = 1;
+        I2 = 1;
+        I3 = 0;
+        I4 = 0;
+        
+        // Invalid
+        #10
+        I1=1;
+        I2=1;
+        I3=1;
+        I4=0;
+        
+        #10;
+        // Cooling
+        I1 = 1;
+        I2 = 0;
+        I3 = 1;
+        I4 = 0;
+        
+        // Invalid
+        #10;
+        I1=1;
+        I2=1;
+        I3=1;
+        I4=0;
+        
+        // Off
+        #10;
+        I1=0;
+        I2=0;
+        I3=1;
+        I4=1;
+        
+        // Idle
+        #10;
+        I1 = 1;
+        I2 = 0;
+        I3 = 0;
+        I4 = 0;
+        
+        #200
         $finish;
     end
 endmodule
